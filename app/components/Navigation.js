@@ -8,7 +8,6 @@ export default function Navigation() {
       <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none' }}>
         <li><Link href="/">หน้าแรก</Link></li>
         <li><Link href="/about">เกี่ยวกับ</Link></li>
-        <li><Link href="/products">สินค้า</Link></li>
         <li><Link href="/contact">ติดต่อ</Link></li>
       </ul>
     </nav>
