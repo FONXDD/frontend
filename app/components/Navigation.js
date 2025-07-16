@@ -13,24 +13,19 @@ export default function Navbar() {
         <li className="nav-item">
           <Link className="nav-link active" aria-current="page" href="/">Home</Link>
         </li>
-        <li className="nav-item">
-          <Link className="nav-link" href="/contact">contact</Link>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul className="dropdown-menu">
-            <li><Link className="dropdown-item" href="#">Action</Link></li>
-            <li><Link className="dropdown-item" href="#">Another action</Link></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><Link className="dropdown-item" href="#">Something else here</Link></li>
-          </ul>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
+      <li className="nav-item">
+        <Link className="nav-link" href="/contact">contact</Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" href="/service">service</Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" href="/Login">Login</Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" href="/Register">Register</Link>
+      </li>
+     </ul>
       <form className="d-flex" role="search">
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button className="btn btn-outline-success" type="submit">Search</button>
