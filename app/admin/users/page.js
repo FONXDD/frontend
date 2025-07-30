@@ -31,6 +31,11 @@ export default function Page() {
     <>
     <br /><br /><br /><br />
     <div className="container">
+      <div className="mb-3">
+        <Link href="/" className="btn btn-primary">
+          <i className="fa fa-home me-2"></i>กลับหน้าหลัก
+        </Link>
+      </div>
       <div className="card">
   <div className="card-header">
     Users List
