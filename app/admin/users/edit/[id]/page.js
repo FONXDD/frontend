@@ -50,7 +50,7 @@ export default function Page() {
         showConfirmButton: false,
         timer: 2000
         }).then(function () {
-        router.push('/register')
+            router.push('/admin/users');
       });
       setFirstname('')
       setFullname('')
