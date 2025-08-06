@@ -27,6 +27,23 @@ export default function Page() {
   return () => clearInterval(interval);
 }, []);
 
+const handleDelete = async (id) => {
+  //console.log('user id :', id);
+  try {
+    const res = await fetch(`http://itdev.cmtc.ac.th:3000/api/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept : 'application/json',
+      },
+    });
+    const result = await res.json();
+    console.log(result);
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}; //end handleDelete
+
   return (
     <>
     <br /><br /><br /><br />
@@ -49,6 +66,11 @@ export default function Page() {
             <th className='col-md-4'>Firstname</th>
             <th className='col-md-4'>Fullname</th>
             <th className='col-md-4'>Lastname</th>
+            <th className='col-md-4'>Username</th>
+            <th className='col-md-4'>Password</th>
+            <th className='col-md-4'>Address</th>
+            <th className='col-md-4'>Sex</th>
+            <th className='col-md-4'>Birthday</th>
             <th className='col-md-1'>Eidt</th>
             <th className='col-md-1'>Delete</th>
           </tr>
@@ -60,8 +82,13 @@ export default function Page() {
               <td>{item.firstname}</td>
               <td>{item.fullname}</td>
               <td>{item.lastname}</td>
-              <td><Link href="" className="btn btn-warning">Edit</Link></td>
-              <td><button className="btn btn-pill btn-danger" type="button"><i className="fa fa-trash"></i>Del</button></td>
+              <td>{item.username}</td>
+              <td>{item.password}</td>
+              <td>{item.address}</td>
+              <td>{item.sex}</td>
+              <td>{item.birthday}</td>
+              <td><Link href={`/admin/users/edit/${item.id}`} className="btn btn-warning">Edit</Link></td>
+              <td><button className="btn btn-pill btn-danger" type="button" onClick={() => handleDelete(item.id)}><i class="fa fa-trash"></i>Del</button></td>
             </tr>
           ))}
         </tbody>

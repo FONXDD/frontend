@@ -8,9 +8,13 @@ export default function Register() {
   const [lastname, setLastname] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [address, setAddress] = useState('')
+  const [sex, setSex] = useState('')
+  const [birthday, setBirthday] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
       method: 'POST',
@@ -21,6 +25,15 @@ export default function Register() {
     });
 
     const result = await res.json();
+    if (res.ok) {
+      Swal.fire({
+        icon: 'success',
+        title: 'สมัครสมาชิกสำเร็จ!',
+        text: 'ยินดีต้อนรับ',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'ตกลง',
+      });
+    }
     console.log(result);
   };
 
@@ -82,6 +95,44 @@ export default function Register() {
               placeholder="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-blue-200 p-2 rounded focus:ring-2 focus:ring-blue-200"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">ที่อยู่</label>
+            <textarea
+              placeholder="ที่อยู่"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full border border-blue-200 p-2 rounded focus:ring-2 focus:ring-blue-200"
+              rows={2}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">เพศ</label>
+            <div className="flex gap-4">
+              <label className="inline-flex items-center">
+                <input type="radio" name="sex" value="ชาย" checked={sex === 'ชาย'} onChange={() => setSex('ชาย')} className="form-radio text-blue-500" required />
+                <span className="ml-2">ชาย</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input type="radio" name="sex" value="หญิง" checked={sex === 'หญิง'} onChange={() => setSex('หญิง')} className="form-radio text-blue-500" required />
+                <span className="ml-2">หญิง</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input type="radio" name="sex" value="อื่นๆ" checked={sex === 'อื่นๆ'} onChange={() => setSex('อื่นๆ')} className="form-radio text-blue-500" required />
+                <span className="ml-2">อื่นๆ</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">วันเกิด</label>
+            <input
+              type="date"
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
               className="w-full border border-blue-200 p-2 rounded focus:ring-2 focus:ring-blue-200"
               required
             />
