@@ -18,9 +18,10 @@ export default function User() {
 
     async function getUsers() {
       try {
-        const res = await fetch('/api/users');
+        const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users');
         if (!res.ok) {
           console.error('Failed to fetch data');
+          setLoading(false);
           return;
         }
         const data = await res.json();
@@ -31,16 +32,16 @@ export default function User() {
         setLoading(false);
       }
     }
- 
-  getUsers()
-  const interval  = setInterval(getUsers, 1000);
-  return () => clearInterval(interval);
-}, []);
+
+    getUsers();
+    const interval = setInterval(getUsers, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
 const handleDelete = async (id) => {
   //console.log('user id :', id);
   try {
-    const res = await fetch(`/api/users/${id}`, {
+    const res = await fetch(`http://itdev.cmtc.ac.th:3000/api/users/${id}`, {
       method: 'DELETE',
       headers: {
         Accept : 'application/json',
@@ -56,7 +57,10 @@ const handleDelete = async (id) => {
 
  // ถ้า loading ให้ return null หรือข้อความ loading
  if (loading) {
-  return <div className='text-center'><h1>Loading...</h1></div>; // หรือ return null เพื่อไม่ให้ render อะไร
+  // ถ้า loading และยังไม่มีข้อมูล ให้แสดง loading
+  if (items.length === 0) {
+    return <div className='text-center'><h1>Loading...</h1></div>;
+  }
 }
 
   return (
