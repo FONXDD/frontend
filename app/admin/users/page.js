@@ -1,12 +1,20 @@
 'use client';
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'
 
-export default function Page() {
+export default function User() {
   const [items, setItems] = useState([]);
-
+  const [loading, setLoading] = useState(true); // <-- เพิ่ม state loading
+  const router = useRouter();
 
   useEffect(() => {
+
+    const token = localStorage.getItem('token');
+     if (!token) {
+       router.push('/register');
+       return;
+     }
 
     async function getUsers() {
       try {
@@ -17,8 +25,10 @@ export default function Page() {
         }
         const data = await res.json();
         setItems(data);
+        setLoading(false); // <-- โหลดเสร็จแล้ว
       } catch (error) {
         console.error('Error fetching data:', error);
+        setLoading(false);
       }
     }
  
@@ -44,22 +54,22 @@ const handleDelete = async (id) => {
   }
 }; //end handleDelete
 
+ // ถ้า loading ให้ return null หรือข้อความ loading
+ if (loading) {
+  return <div className='text-center'><h1>Loading...</h1></div>; // หรือ return null เพื่อไม่ให้ render อะไร
+}
+
   return (
     <>
     <br /><br /><br /><br />
     <div className="container">
-      <div className="mb-3">
-        <Link href="/" className="btn btn-primary">
-          <i className="fa fa-home me-2"></i>กลับหน้าหลัก
-        </Link>
-      </div>
       <div className="card">
   <div className="card-header">
     Users List
   </div>
   <div className="card-body">
   <div className="row">
-      <table className="table table-striped table-hover">
+      <table className="table table-striped table-hover table-responsive">
         <thead>
           <tr>
             <th className='col-md-2 text-center'>#</th>
@@ -67,7 +77,7 @@ const handleDelete = async (id) => {
             <th className='col-md-4'>Fullname</th>
             <th className='col-md-4'>Lastname</th>
             <th className='col-md-4'>Username</th>
-            <th className='col-md-4'>Password</th>
+            {/* <th className='col-md-4'>Password</th> */}
             <th className='col-md-4'>Address</th>
             <th className='col-md-4'>Sex</th>
             <th className='col-md-4'>Birthday</th>
@@ -83,12 +93,12 @@ const handleDelete = async (id) => {
               <td>{item.fullname}</td>
               <td>{item.lastname}</td>
               <td>{item.username}</td>
-              <td>{item.password}</td>
+              {/* <td>{item.password}</td> */}
               <td>{item.address}</td>
               <td>{item.sex}</td>
               <td>{item.birthday}</td>
               <td><Link href={`/admin/users/edit/${item.id}`} className="btn btn-warning">Edit</Link></td>
-              <td><button className="btn btn-pill btn-danger" type="button" onClick={() => handleDelete(item.id)}><i class="fa fa-trash"></i>Del</button></td>
+              <td><button className="btn btn-pill btn-danger" type="button" onClick={() => handleDelete(item.id)}><i className="fa fa-trash"></i>Del</button></td>
             </tr>
           ))}
         </tbody>

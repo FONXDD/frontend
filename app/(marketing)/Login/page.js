@@ -1,34 +1,100 @@
+'use client'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link'
+import Swal from 'sweetalert2';
 
-import React from "react";
+export default function Page() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
 
-const Login = () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('http://itdev.cmtc.ac.th:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+      console.log(username);
+
+      if (data.token) {
+        Swal.fire({
+          icon: 'success',
+          title: 'เข้าสู่ระบบสำเร็จ!',
+          text: 'ยินดีต้อนรับเข้าสู่ระบบ',
+          showConfirmButton: false,
+          timer: 800,
+        }).then(()=> {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('username', username);
+          window.dispatchEvent(new Event('storage'));
+          if (typeof onLoginSuccess === 'function') {
+            onLoginSuccess();
+          }
+          router.push('/admin/users');
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'เข้าสู่ระบบไม่สำเร็จ',
+          text: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+          confirmButtonText: 'ลองใหม่อีกครั้ง'
+        });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้',
+        confirmButtonText: 'ตกลง'
+      });
+    }
+  } // <-- ปิดฟังก์ชัน handleLogin ตรงนี้
+
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="card p-4 shadow" style={{ maxWidth: 400, width: "100%" }}>
-        <h2 className="mb-4 text-center">เข้าสู่ระบบ</h2>
-        <form>
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label">Username</label>
-            <input type="text" className="form-control" id="username" placeholder="กรอกชื่อผู้ใช้" />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
-            <input type="password" className="form-control" id="password" placeholder="กรอกรหัสผ่าน" />
-          </div>
-          <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="rememberMe" />
-            <label className="form-check-label" htmlFor="rememberMe">จำฉันไว้</label>
-          </div>
-          <button type="submit" className="btn btn-primary w-100 mb-2">Login</button>
-          <div className="text-center">
-            <a href="#" className="me-2">สมัครสมาชิก</a>
-            |
-            <a href="#" className="ms-2">ลืมรหัสผ่าน</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
+    <>
+    <br /><br /><br />
+<div className="container">
+<div className="card">
+  <div className="card-header bg-success text-white">
+    SignIn Form
+  </div>
+  <div className="card-body">
 
-export default Login;
+  <form className="row g-3" onSubmit={handleLogin}>
+  <div className="col-md-12">
+  <label className="form-label">Username</label>
+    <div className="input-group">
+      <span className="input-group-text" id="basic-addon3"><i className="bi bi-person-vcard"></i></span>
+    <input type="text" className="form-control" id="formGroupExampleInput" defaultValue={username} placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+  </div>
+  </div>
+  <div className="col-md-12">
+  <label className="form-label">Password</label>
+    <div className="input-group">
+      <span className="input-group-text" id="basic-addon3"><i className="bi bi-person-vcard"></i></span>
+    <input type="text" className="form-control" id="formGroupExampleInput2" defaultValue={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+  </div>
+  </div>
+  <div className="col-12">
+    <button type="submit" className="btn btn-primary">Sign In</button>
+  </div>
+  <div className="col-12">
+    <Link href="/register">Create Account</Link> | <Link href="/">Forget Password</Link>
+  </div>
+  </form>
+  </div>
+  </div>
+
+
+  </div>
+    </>
+  );
+}
