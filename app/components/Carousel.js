@@ -9,7 +9,7 @@ export default function Carousel() {
         <div className="carousel-inner h-100 w-100">
           <div className="carousel-item active position-relative h-100 w-100">
             <img
-              src="/images/sliders/sliders-01.png"
+              src="/images/sliders/dd1.png"
               className="d-block w-100 h-100"
               alt="สไลด์ 1"
               style={{ height: "100vh", objectFit: "cover", filter: "brightness(0.85)" }}
